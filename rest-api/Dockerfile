@@ -8,6 +8,6 @@ MAINTAINER void666@live.com
 
 COPY --from=0 /tmp/target/rest-api.jar /opt/
 
-ENTRYPOINT ["java","-jar","/opt/rest-api.jar","--spring.profiles.active=local"]
+ENTRYPOINT ["java","-jar","/opt/rest-api.jar"]
 
 EXPOSE 8080
