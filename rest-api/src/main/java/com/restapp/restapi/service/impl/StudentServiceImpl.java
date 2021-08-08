@@ -53,13 +53,22 @@ public class StudentServiceImpl implements StudentsService {
         if (studentRequestDTO.getFullName() != null && studentRequestDTO.getDateOfBirth() != null) {
             student.setFull_name(studentRequestDTO.getFullName());
             student.setDateOfBirth(studentRequestDTO.getDateOfBirth());
-            student.setProgress_id(studentRequestDTO.getProgressId());
-            studentsRepository.save(student);
-            addNewStudentsResponseDTO.setMessage("Student added successfully");
+            if (studentRequestDTO.getProgressId() != null) {
+                if (studentRequestDTO.getProgressId() > 1 && studentRequestDTO.getProgressId() < 6) {
+                    student.setProgress_id(studentRequestDTO.getProgressId());
+                    studentsRepository.save(student);
+                    addNewStudentsResponseDTO.setMessage("Student added successfully");
+                } else {
+                    student.setProgress_id(studentRequestDTO.getProgressId());
+                    addNewStudentsResponseDTO.setMessage("Incorrect progress id.");
+                }
+            } else {
+                studentsRepository.save(student);
+                addNewStudentsResponseDTO.setMessage("Student added successfully");
+            }
         } else {
             addNewStudentsResponseDTO.setMessage("Some required fields are missing");
         }
-
         addNewStudentsResponseDTO.setStudentRequestDTO(studentRequestDTO);
         return addNewStudentsResponseDTO;
     }
