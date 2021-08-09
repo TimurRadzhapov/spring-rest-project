@@ -25,35 +25,27 @@ public class ProgressServiceImpl implements ProgressService {
     @Override
     public GetAllProgressResponseDTO getListOfProgress() {
         List<Progress> progressList = progressRepository.findAll();
-        List<ProgressDTO> res = progressList.stream().map(progress -> {
-            ProgressDTO progressDTO = new ProgressDTO();
-            progressDTO.setId(progress.getId());
-            progressDTO.setText(progress.getText());
-            return progressDTO;
-        }).collect(Collectors.toList());
+        List<ProgressDTO> res = progressList.stream()
+                .map(progress -> new ProgressDTO(progress.getId(), progress.getText()))
+                .collect(Collectors.toList());
 
-        GetAllProgressResponseDTO getAllProgressResponseDTO = new GetAllProgressResponseDTO();
-
+        GetAllProgressResponseDTO getAllProgressResponseDTO = new GetAllProgressResponseDTO("No any progress records", res);
         if (res.size() > 0) {
             getAllProgressResponseDTO.setMessage("Successfully.");
-        } else {
-            getAllProgressResponseDTO.setMessage("No any progress records");
         }
-        getAllProgressResponseDTO.setProgressDTOS(res);
         return getAllProgressResponseDTO;
     }
 
     @Override
     public EditProgressResponseDTO editProgressText(Long id, ProgressResponseDTO progressResponseDTO) {
         Optional<Progress> progress = progressRepository.findById(id);
-        ProgressDTO progressDTO = new ProgressDTO();
+
         EditProgressResponseDTO editProgressResponseDTO = new EditProgressResponseDTO();
         if (progress.isPresent()) {
             if (progressResponseDTO.getText() != null) {
                 progress.get().setText(progressResponseDTO.getText());
                 progressRepository.save(progress.get());
-                progressDTO.setId(progress.get().getId());
-                progressDTO.setText(progressResponseDTO.getText());
+                ProgressDTO progressDTO = new ProgressDTO(progress.get().getId(), progressResponseDTO.getText());
                 editProgressResponseDTO.setMessage("Student edited successfully");
                 editProgressResponseDTO.setProgressDTO(progressDTO);
             } else {

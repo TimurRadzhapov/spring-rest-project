@@ -8,6 +8,11 @@ public class ProgressDTO {
     @NotBlank
     private String text;
 
+    public ProgressDTO(Long id, @NotBlank String text) {
+        this.id = id;
+        this.text = text;
+    }
+
     public Long getId() {
         return id;
     }

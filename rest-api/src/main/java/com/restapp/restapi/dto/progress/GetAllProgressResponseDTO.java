@@ -7,6 +7,11 @@ public class GetAllProgressResponseDTO {
     private String message;
     private List<ProgressDTO> progressDTOS;
 
+    public GetAllProgressResponseDTO(String message, List<ProgressDTO> progressDTOS) {
+        this.message = message;
+        this.progressDTOS = progressDTOS;
+    }
+
     public String getMessage() {
         return message;
     }
